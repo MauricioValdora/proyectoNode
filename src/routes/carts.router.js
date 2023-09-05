@@ -10,9 +10,10 @@ function generateId() {
     return time;
 }
 
+const path = './carrito.json';
+
 router.post('/', (req, res) => {
     const nuevoProducto = req.body;
-    const path = './carrito.json';
 
     fs.readFile(path, 'utf8', (err, data) => {
         let productos = [];
@@ -46,17 +47,40 @@ router.post('/', (req, res) => {
 });
 
 router.post('/:cid/product/:pid', (req, res) => {
-    const cid = req.params.cid
-    const pid = req.params.pid
-    const { product } = req.query
+
+    const cid = parseFloat(req.params.cid)
+    const pid = parseFloat(req.params.pid)
+
+    const productList = productManager.getProducts(path);
+    const productParse = JSON.parse(productList);
+
+    const productIndex = productParse.findIndex(p => p.id === cid);
+
+    let modificacion = {
+        pid: pid,
+        quantity: 1
+
+    }
+    if (productIndex !== -1) {
+        productParse[productIndex] = { ...productParse[productIndex], ...modificacion };
+
+        try {
+            fs.writeFileSync(path, JSON.stringify(productParse));
+            console.log('Campo actualizado exitosamente.');
+            res.send("datos actualizados").status(200)
+        } catch (error) {
+            console.error('Error al actualizar el campo:', error);
+        }
+    } else {
+        console.error('PRODUCT NOT FOUND');
+        res.send("producto no encontrado")
+    }
 
 })
 
 router.get('/:cid', (req, res) => {
 
     const cid = parseFloat(req.params.cid);
-    const path = './carrito.json';
-
 
     try {
         const cartById = productManager.getProductsById(cid, path);
@@ -69,7 +93,6 @@ router.get('/:cid', (req, res) => {
     } catch (error) {
         res.status(500).send('Ocurrió un error al buscar el producto');
     }
-
 
 })
 

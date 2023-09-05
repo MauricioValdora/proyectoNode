@@ -10,10 +10,11 @@ router.use(express.urlencoded({ extended: true }));
 
 const productManager = new ProductManager()
 
+const path = './productos.json';
+
 // traer todos los datos
 router.get('/', (req, res) => {
 
-    const path = './productos.json';
 
     const { limit } = req.query
     const products = JSON.parse(productManager.getProducts(path))
@@ -30,10 +31,9 @@ router.get('/', (req, res) => {
 router.get('/:pid', (req, res) => {
 
     const pId = parseInt(req.params.pid);
-    const path = './productos.json';
 
     try {
-        const productById = productManager.getProductsById(pId,path);
+        const productById = productManager.getProductsById(pId, path);
 
         if (productById) {
             res.send(productById);
@@ -54,7 +54,6 @@ function generateId() {
 // Retorno los productos existentes si es que los hay
 router.post('/', (req, res) => {
     const product = req.body;
-    const path = './productos.json';
 
     if (
         typeof product.title !== 'string' ||
@@ -100,15 +99,14 @@ router.post('/', (req, res) => {
 // Actualizo los datos
 router.put('/:pid', (req, res) => {
 
-    const path = './productos.json';
 
     const id = parseInt(req.params.pid);
 
     const { title, description, code, price, status, stock, category, thumbnails } = req.body;
 
-    if(!title|| !description|| !code|| !price|| !status|| !stock|| !category|| !thumbnails){
+    if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
         return res.status(400).send("Faltan campos");
-    }else if(
+    } else if (
         typeof title !== 'string' ||
         typeof description !== 'string' ||
         typeof code !== 'string' ||
@@ -117,16 +115,16 @@ router.put('/:pid', (req, res) => {
         typeof stock !== 'number' ||
         typeof category !== 'string' ||
         typeof thumbnails !== 'string'
-    ){
+    ) {
         return res.status(400).send("Tipo de datos incorrectos")
     }
-    else{
+    else {
 
         const productList = productManager.getProducts(path);
         const productParse = JSON.parse(productList);
-    
+
         const productIndex = productParse.findIndex(p => p.id === id);
-    
+
         let modificacion = {
             title,
             description,
@@ -140,7 +138,7 @@ router.put('/:pid', (req, res) => {
         }
         if (productIndex !== -1) {
             productParse[productIndex] = modificacion;
-    
+
             try {
                 fs.writeFileSync(path, JSON.stringify(productParse));
                 console.log('Campo actualizado exitosamente.');
@@ -156,18 +154,17 @@ router.put('/:pid', (req, res) => {
 
 })
 
-router.delete('/:pid',(req,res)=>{
+router.delete('/:pid', (req, res) => {
 
     const pid = parseInt(req.params.pid);
-    const path = './productos.json'
 
-    const respuesta = productManager.deleteProduct(pid,path)
+    const respuesta = productManager.deleteProduct(pid, path)
 
-    if(respuesta===1){
+    if (respuesta === 1) {
         res.send("producto eliminado exitosamente")
-    }else if(respuesta===-1){
+    } else if (respuesta === -1) {
         res.send('Error al eliminar el producto')
-    }else if(respuesta===0){
+    } else if (respuesta === 0) {
         res.send("Producto no entontrado")
     }
 
