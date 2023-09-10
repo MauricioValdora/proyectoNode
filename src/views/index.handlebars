@@ -1,0 +1,15 @@
+<h1>Lista de Productos</h1>
+    <ul>
+        {{#each products}}
+        <li>
+            <h2>{{title}}</h2>
+            <p>Descripción: {{description}}</p>
+            <p>Código: {{code}}</p>
+            <p>Precio: {{price}}</p>
+            <p>Stock: {{stock}}</p>
+            <p>Categoría: {{category}}</p>
+            <p>Estado: {{#if status}}Disponible{{else}}No disponible{{/if}}</p>
+            <!-- Aquí puedes agregar más campos del producto si es necesario -->
+        </li>
+        {{/each}}
+    </ul>

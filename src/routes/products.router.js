@@ -15,7 +15,6 @@ const path = './productos.json';
 // traer todos los datos
 router.get('/', (req, res) => {
 
-
     const { limit } = req.query
     const products = JSON.parse(productManager.getProducts(path))
     let datos;

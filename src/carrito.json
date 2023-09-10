@@ -22,10 +22,37 @@
                 "category": "entretenimiento",
                 "thumbnails": "sin imagen"
             }
-        ]
+        ],
+        "pid": 1693934294284,
+        "quantity": 1
     },
     {
         "id": 1693938250763,
+        "products": [
+            {
+                "tittle": "play statiadsfon ",
+                "description": "muy divertida",
+                "code": "123",
+                "price": 10000,
+                "status": true,
+                "stock": 500,
+                "category": "entretenimiento",
+                "thumbnails": "sin imagen"
+            },
+            {
+                "tittle": "play statiadsfon ",
+                "description": "muy divertida",
+                "code": "123",
+                "price": 10000,
+                "status": true,
+                "stock": 500,
+                "category": "entretenimiento",
+                "thumbnails": "sin imagen"
+            }
+        ]
+    },
+    {
+        "id": 1693957761507,
         "products": [
             {
                 "tittle": "play statiadsfon ",

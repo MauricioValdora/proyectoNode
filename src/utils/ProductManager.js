@@ -7,7 +7,7 @@ class ProductManager {
         this.id = 0
     }
 
-    async addProducts(title, description, price, thumbNail, code, stock , path) {
+    async addProducts(title, description, price, thumbNail, code, stock, path) {
 
         if (!title || !description || !price || !thumbNail || !code || !stock) {
             console.error('ALL FIELDS ARE REQUIRED');
@@ -38,7 +38,6 @@ class ProductManager {
         } catch (error) {
             console.error(error);
         }
-
     }
     getProducts(path) {
         if (fs.existsSync(path)) {
@@ -54,7 +53,7 @@ class ProductManager {
         }
     }
 
-    getProductsById(id,path) {
+    getProductsById(id, path) {
         let productList = fs.readFileSync(path, 'utf-8');
 
         let productParse = JSON.parse(productList)
@@ -95,7 +94,7 @@ class ProductManager {
         }
     }
 
-    deleteProduct(id,path) {
+    deleteProduct(id, path) {
         const productList = this.getProducts(path);
         const productParse = JSON.parse(productList);
 
