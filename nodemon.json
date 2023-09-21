@@ -1,0 +1,6 @@
+{
+    "ignore": [
+        "./src/carrito.json","./src/productos.json"
+    ],
+    "ext": "js,mjs,cjs,json,handlebars,hbs"
+}

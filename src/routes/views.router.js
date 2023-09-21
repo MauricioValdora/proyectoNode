@@ -13,4 +13,15 @@ router.get('/', (req, res) => {
 
 })
 
+router.get('/realtimeproducts', (req, res) => {
+
+    const path = './productos.json';
+
+    const products = JSON.parse(productManager.getProducts(path))
+
+    
+    res.render('realTimeProducts', { products })
+
+})
+
 export default router

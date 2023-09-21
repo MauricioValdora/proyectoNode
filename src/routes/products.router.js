@@ -1,6 +1,7 @@
 import express from 'express'
 import fs from 'fs'
 import ProductManager from '../utils/ProductManager.js'
+import { socketServer } from '../app.js'
 
 const router = express.Router();
 
@@ -89,6 +90,8 @@ router.post('/', (req, res) => {
                 return res.status(500).send({ msg: 'Error al guardar los datos' });
             }
 
+            socketServer.sockets.emit('new_product', product)
+
             console.log('El producto que se agregó:', product);
             res.status(200).send({ msg: 'Éxito' });
         });
@@ -161,6 +164,8 @@ router.delete('/:pid', (req, res) => {
 
     if (respuesta === 1) {
         res.send("producto eliminado exitosamente")
+        socketServer.sockets.emit('delete_product', { idProducto: pid })
+
     } else if (respuesta === -1) {
         res.send('Error al eliminar el producto')
     } else if (respuesta === 0) {
