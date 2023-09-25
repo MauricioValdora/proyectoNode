@@ -1,9 +1,9 @@
 import express from 'express'
 import fs from 'fs'
-import ProductManager from '../dao/fileManager/ProductManager.js'
+import CartMongoose from '../dao//dbManagers/cart.manager.js'
 
 const router = express.Router();
-const productManager = new ProductManager()
+const cartMongoose = new CartMongoose();
 
 function generateId() {
     const time = new Date().getTime();
@@ -15,35 +15,39 @@ const path = './carrito.json';
 router.post('/', (req, res) => {
     const nuevoProducto = req.body;
 
-    fs.readFile(path, 'utf8', (err, data) => {
-        let productos = [];
+    // fs.readFile(path, 'utf8', (err, data) => {
+    //     let productos = [];
 
-        if (!err) {
-            try {
-                productos = JSON.parse(data);
-            } catch (error) {
-                console.error('Error al analizar los datos JSON existentes:', error);
-                return res.status(500).send({ msg: 'Error al analizar los datos JSON existentes' });
-            }
-        }
+    //     if (!err) {
+    //         try {
+    //             productos = JSON.parse(data);
+    //         } catch (error) {
+    //             console.error('Error al analizar los datos JSON existentes:', error);
+    //             return res.status(500).send({ msg: 'Error al analizar los datos JSON existentes' });
+    //         }
+    //     }
 
-        const carrito = {
-            id: generateId(),
-            products: nuevoProducto
-        }
+    //     const carrito = {
+    //         id: generateId(),
+    //         products: nuevoProducto
+    //     }
 
-        productos.push(carrito);
+    //     productos.push(carrito);
 
-        fs.writeFile(path, JSON.stringify(productos), (err) => {
-            if (err) {
-                console.error('Error al guardar los datos:', err);
-                return res.status(500).send({ msg: 'Error al guardar los datos' });
-            }
+    cartMongoose.save(nuevoProducto)
+        .then(respuesta => res.send('carrito guardado'))
+        .catch(error => res.send(error))
 
-            console.log('El producto que se agregó:', nuevoProducto);
-            res.status(200).send({ msg: 'Éxito' });
-        });
-    });
+    //     fs.writeFile(path, JSON.stringify(productos), (err) => {
+    //         if (err) {
+    //             console.error('Error al guardar los datos:', err);
+    //             return res.status(500).send({ msg: 'Error al guardar los datos' });
+    //         }
+
+    //         console.log('El producto que se agregó:', nuevoProducto);
+    //         res.status(200).send({ msg: 'Éxito' });
+    //     });
+    // });
 });
 
 router.post('/:cid/product/:pid', (req, res) => {
@@ -75,7 +79,6 @@ router.post('/:cid/product/:pid', (req, res) => {
         console.error('PRODUCT NOT FOUND');
         res.send("producto no encontrado")
     }
-
 })
 
 router.get('/:cid', (req, res) => {
@@ -93,7 +96,6 @@ router.get('/:cid', (req, res) => {
     } catch (error) {
         res.status(500).send('Ocurrió un error al buscar el producto');
     }
-
 })
 
 export default router;

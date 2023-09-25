@@ -1,27 +1,22 @@
 import express, { json } from 'express'
-import ProductManager from '../dao/fileManager/ProductManager.js'
+import Products from '../dao/dbManagers/products.manager.js'
 
 
 const router = express.Router()
-const productManager = new ProductManager()
+const productManagerMongoose = new Products()
 
 router.get('/', (req, res) => {
-    const path = './productos.json';
 
-    const products = JSON.parse(productManager.getProducts(path))
-
-    res.render('index', { products })
+    productManagerMongoose.getAll()
+        .then(products => res.render('index', { products }))
+        .catch(error => res.render('index', error))
 
 })
 
 router.get('/realtimeproducts', (req, res) => {
 
-    const path = './productos.json';
-
-    const products = JSON.parse(productManager.getProducts(path))
-
-
-    res.render('realTimeProducts', { products })
+    productManagerMongoose.getAll()
+        .then(products => res.render('realTimeProducts', { products }))
 
 })
 
