@@ -1,9 +1,11 @@
 import express from 'express'
 import fs from 'fs'
-import ProductManager from '../utils/ProductManager.js'
+import ProductManager from '../dao/fileManager/ProductManager.js'
 import { socketServer } from '../app.js'
-
+import Products from '../dao/dbManagers/products.manager.js'
 const router = express.Router();
+
+const productManagerMongoose = new Products()
 
 router.use(express.json());
 
@@ -17,14 +19,15 @@ const path = './productos.json';
 router.get('/', (req, res) => {
 
     const { limit } = req.query
-    const products = JSON.parse(productManager.getProducts(path))
-    let datos;
-    if (limit <= products.length) {
-        datos = products.slice(0, limit)
-    } else {
-        datos = products;
-    }
-    res.json({ data: datos })
+    // const products = JSON.parse(productManager.getProducts(path))
+    const products = productManagerMongoose.getAll()
+    // let datos;
+    // if (limit <= products.length) {
+    //     datos = products.slice(0, limit)
+    // } else {
+    //     datos = products;
+    // }
+    res.json({ productos: products })
 })
 
 // Traer datos por id
@@ -33,10 +36,12 @@ router.get('/:pid', (req, res) => {
     const pId = parseInt(req.params.pid);
 
     try {
-        const productById = productManager.getProductsById(pId, path);
+        // const productById = productManager.getProductsById(pId, path);
 
-        if (productById) {
-            res.send(productById);
+        const product = productManagerMongoose.getById(pId)
+
+        if (product) {
+            res.send(product);
         } else {
             res.status(404).send(`El id ${pId} no existe en la base de datos`);
         }

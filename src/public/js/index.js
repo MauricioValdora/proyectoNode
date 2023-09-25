@@ -16,7 +16,7 @@ socket.on('new_product', async product => {
     `;
     productList.appendChild(listItem);
 })
-
+ 
 
 socket.on('delete_product', data => {
     console.log(data);

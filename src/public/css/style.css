@@ -1,0 +1,11 @@
+.contenedor {
+    height: 500px;
+    background-color: #333;
+}
+
+.chat-izquierdo{
+    float : left ;
+}
+.chat-derecho{
+    float : right ;
+}

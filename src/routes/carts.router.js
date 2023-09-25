@@ -1,6 +1,6 @@
 import express from 'express'
 import fs from 'fs'
-import ProductManager from '../utils/ProductManager.js'
+import ProductManager from '../dao/fileManager/ProductManager.js'
 
 const router = express.Router();
 const productManager = new ProductManager()
