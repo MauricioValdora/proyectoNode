@@ -47,10 +47,13 @@ socketServer.on('connection', socket => {
     socket.on('message', (msg) => {
 
         messageManager.save(msg)
+            .then(mensaje => {
+                messageManager.getAll()
+                    .then((mensajes) => { socketServer.emit('chat_message', mensajes) })
+                    .catch((error) => console.log(error))
+            })
+            .catch(error => console.log(error))
 
-        messageManager.getAll()
-            .then((mensajes) => { socketServer.emit('chat_message', mensajes) })
-            .catch((error) => console.log(error))
 
     });
 

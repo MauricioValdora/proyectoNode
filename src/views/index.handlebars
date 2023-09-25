@@ -1,19 +1,25 @@
+<div class="container">
+    <h1>Lista de Productos</h1>
+    <div class="contenedorBtn">
 
-<h1>Lista de Productos</h1>
-
-<ul>
-    {{#each products}}
-    <li>
-        <h2>{{title}}</h2>
-        <p>Descripción: {{description}}</p>
-        <p>Código: {{code}}</p>
-        <p>Precio: {{price}}</p>
-        <p>Stock: {{stock}}</p>
-        <p>Categoría: {{category}}</p>
-        <p>Estado: {{#if status}}Disponible{{else}}No disponible{{/if}}</p>
-    </li>
-    {{/each}}
-</ul>
-
-
-
+        <a href="./realTimeProducts">
+            <button class="btn">Real time products</button>
+        </a>
+        <a href="./chat">
+            <button class="btn">Chat</button>
+        </a>
+    </div>
+    <ul class="listaProductosContenedor">
+        {{#each products}}
+        <li class="listaProductos">
+            <h2>{{title}}</h2>
+            <p>Descripción: {{description}}</p>
+            <p>Código: {{code}}</p>
+            <p>Precio: {{price}}</p>
+            <p>Stock: {{stock}}</p>
+            <p>Categoría: {{category}}</p>
+            <p>Estado: {{#if status}}Disponible{{else}}No disponible{{/if}}</p>
+        </li>
+        {{/each}}
+    </ul>
+</div>

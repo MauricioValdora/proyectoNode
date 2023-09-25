@@ -1,12 +1,35 @@
 <h1>Chat online</h1>
+<div class="chatContenedor">
+    <div class="contenedorBtn">
 
-<div>
-    <input id="chatBox">
-</div>
-<div>
-    <p id="messagesLogs"></p>
-</div>
+        <a href="./realTimeProducts">
+            <button class="btn">Real time products</button>
+        </a>
+        <a href="/">
+            <button class="btn">Productos estaticos</button>
+        </a>
+    </div>
 
+    <div class="contenedor-chatBox">
+
+        <form action="" id="form">
+
+            <input id="chatBox" class="chatBox">
+            <button type="submit" class="btn">enviar</button>
+
+        </form>
+
+    </div>
+    <div>
+        <ul id="messagesLogs">
+            {{#each chats}}
+            <li>
+                {{this.user}}: {{this.message}}
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.28/dist/sweetalert2.all.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/chat.js"></script>

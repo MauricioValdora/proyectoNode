@@ -1,12 +1,13 @@
 
 const socket = io()
 let user;
+let form = document.getElementById('form')
 let chatBox = document.getElementById('chatBox')
 
+
 swal.fire({
-    title: "Identifiquese",
     input: 'email',
-    text: "Ingrese su nombre",
+    text: "Ingrese su email",
     icon: "success",
     inputValidator: (value) => {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,26 +23,33 @@ swal.fire({
     .then(result => {
         user = result.value
     });
-socket.on()
-chatBox.addEventListener('keyup', e => {
-    if (e.key === "Enter") {
-        const inputValue = chatBox.value.trim();
 
-        if (inputValue.length > 0) {
-            socket.emit("message", { user: user, message: inputValue })
-            chatBox.value = ''
-        }
+
+socket.on()
+form.addEventListener('submit', e => {
+    e.preventDefault();
+    const inputValue = chatBox.value.trim();
+
+    if (inputValue.length > 0) {
+        socket.emit("message", { user: user, message: inputValue })
+        chatBox.value = ''
     }
+
 })
 
 socket.on('chat_message', async data => {
+
     let logs = document.getElementById('messagesLogs')
-    let messages = ""
-    data.forEach(message => {
-        messages = messages + `${message.user} dice: ${message.message} </br>`
-    })
-    logs.innerHTML = messages
+
     console.log(data)
+    const listMessage = document.createElement('ul');
+    data.forEach(mensajes => {
+        listMessage.innerHTML = `
+        <li>Nombre: ${mensajes.user} mensaje: ${mensajes.message} </li>
+        `;
+        logs.appendChild(listMessage);
+    });
+
 })
 
 

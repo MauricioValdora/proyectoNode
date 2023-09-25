@@ -14,6 +14,7 @@ const path = './carrito.json';
 
 router.post('/', (req, res) => {
     const nuevoProducto = req.body;
+    console.log(nuevoProducto)
 
     // fs.readFile(path, 'utf8', (err, data) => {
     //     let productos = [];
@@ -35,7 +36,7 @@ router.post('/', (req, res) => {
     //     productos.push(carrito);
 
     cartMongoose.save(nuevoProducto)
-        .then(respuesta => res.send('carrito guardado'))
+        .then(respuesta => res.send(`guardaste esta lista de productos `))
         .catch(error => res.send(error))
 
     //     fs.writeFile(path, JSON.stringify(productos), (err) => {
@@ -83,19 +84,22 @@ router.post('/:cid/product/:pid', (req, res) => {
 
 router.get('/:cid', (req, res) => {
 
-    const cid = parseFloat(req.params.cid);
+    const cid = req.params.cid
+    cartMongoose.getById(cid)
+        .then(respuesta => res.send(respuesta))
+        .catch(error => res.send(error))
 
-    try {
-        const cartById = productManager.getProductsById(cid, path);
+    // try {
+    //     const cartById = productManager.getProductsById(cid, path);
 
-        if (cartById) {
-            res.send(cartById);
-        } else {
-            res.status(404).send(`El id ${cid} no existe en la base de datos`);
-        }
-    } catch (error) {
-        res.status(500).send('Ocurrió un error al buscar el producto');
-    }
+    //     if (cartById) {
+    //         res.send(cartById);
+    //     } else {
+    //         res.status(404).send(`El id ${cid} no existe en la base de datos`);
+    //     }
+    // } catch (error) {
+    //     res.status(500).send('Ocurrió un error al buscar el producto');
+    // }
 })
 
 export default router;

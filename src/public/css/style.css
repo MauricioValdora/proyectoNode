@@ -3,9 +3,61 @@
     background-color: #333;
 }
 
-.chat-izquierdo{
-    float : left ;
+.chat-izquierdo {
+    float: left;
 }
-.chat-derecho{
-    float : right ;
+
+.chat-derecho {
+    float: right;
+}
+
+.container {}
+
+.listaProductosContenedor {
+    background-color: #333;
+    color: aliceblue;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    font-size: 18px;
+    
+}
+
+.listaProductos{
+    background:#28a745 ;
+    border : solid black .2rem;
+    border-radius:.9em;
+    margin: 20px;
+    padding: 10px;
+    list-style: none;
+
+}
+.contenedorBtn{
+    display:flex;
+}
+.btn{
+    height: 3rem;
+    border-radius: .5rem;
+    margin-right: 2rem;
+
+}
+.chatBox{
+    height: 2rem;
+    border-radius: 2rem;
+}
+
+.contenedor-chatBox {
+    margin: 1rem;
+}
+.contenedor-chatBox .btn{
+height: 2rem;}
+
+.chatContenedor{
+    background:#28a745 ;
+    border : solid black .2rem;
+    border-radius:.9em;
+    margin: 20px;
+    padding: 10px;
+    list-style: none;
 }

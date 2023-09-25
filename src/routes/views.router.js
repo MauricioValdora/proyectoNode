@@ -1,9 +1,11 @@
 import express, { json } from 'express'
 import Products from '../dao/dbManagers/products.manager.js'
+import MessageManager from '../dao/dbManagers/messages.manager.js'
 
 
 const router = express.Router()
 const productManagerMongoose = new Products()
+const chatManager = new MessageManager()
 
 router.get('/', (req, res) => {
 
@@ -22,7 +24,9 @@ router.get('/realtimeproducts', (req, res) => {
 
 router.get('/chat', (req, res) => {
 
-    res.render('chat', {})
+    chatManager.getAll()
+        .then(chats => res.render('chat', { chats }))
+        .catch(error => res.render(error))
 
 })
 export default router
