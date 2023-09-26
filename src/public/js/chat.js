@@ -45,7 +45,7 @@ socket.on('chat_message', async data => {
     const listMessage = document.createElement('ul');
     data.forEach(mensajes => {
         listMessage.innerHTML = `
-        <li>Nombre: ${mensajes.user} mensaje: ${mensajes.message} </li>
+        <li>Nombre: ${mensajes.user} Dice: ${mensajes.message} </li>
         `;
         logs.appendChild(listMessage);
     });

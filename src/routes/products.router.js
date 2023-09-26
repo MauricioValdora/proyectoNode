@@ -13,7 +13,6 @@ router.use(express.urlencoded({ extended: true }));
 // traer todos los datos
 router.get('/', (req, res) => {
 
-    const { limit } = req.query
     productManagerMongoose.getAll()
         .then(product => res.send(product))
         .catch(error => res.status(500).send(error))
@@ -21,15 +20,20 @@ router.get('/', (req, res) => {
 
 // Traer datos por id
 router.get('/:pid', (req, res) => {
-
     const pId = req.params.pid;
-    console.log(pId)
+    console.log(pId);
 
     productManagerMongoose.getById(pId)
-        .then(product => res.send(product))
-        .catch(error => res.status(500).send(error))
-
+        .then(product => {
+            if (!product) {
+                res.status(404).send('Producto no encontrado');
+            } else {
+                res.send(product);
+            }
+        })
+        .catch(error => res.status(500).send('Error interno del servidor'));
 });
+
 
 
 // Retorno los productos existentes si es que los hay
@@ -92,14 +96,18 @@ router.put('/:pid', (req, res) => {
             .catch(error => res.send(error))
     }
 })
-
 router.delete('/:pid', (req, res) => {
-
     const pid = req.params.pid;
 
     productManagerMongoose.delete(pid)
-        .then(resp => res.send(`Producto eliminado`))
-        .catch(error => res.send(error))
-})
+        .then(resp => {
+            if (resp) {
+                res.send(`Producto eliminado`);
+            } else {
+                res.send('Producto no eliminado');
+            }
+        })
+        .catch(error => res.send(error));
+});
 
 export default router;

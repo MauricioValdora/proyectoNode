@@ -27,7 +27,7 @@ export default class Products {
     }
 
     delete = async (id) => {
-        const result = await productsModel.deleteOne({ _id: id })
+        const result = await productsModel.findByIdAndDelete({ _id: id })
         return result
     }
 
