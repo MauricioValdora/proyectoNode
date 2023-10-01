@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { query } from 'express'
 import { socketServer } from '../app.js'
 import Products from '../dao/dbManagers/products.manager.js'
 const router = express.Router();
@@ -11,12 +11,24 @@ router.use(express.urlencoded({ extended: true }));
 
 
 // traer todos los datos
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 
-    productManagerMongoose.getAll()
-        .then(product => res.send(product))
-        .catch(error => res.status(500).send(error))
-})
+    const { limit, page, sort, queryFilter } = req.query
+
+    const limite = limit ? parseInt(limit) : 10
+    const resp = await productManagerMongoose.filtradoMasivo(page, limite, sort, queryFilter)
+    res.json({
+        status: 'succes',
+        payload: resp.docs,
+        totalPages: resp.totalPages,
+        prevPage: resp.prevPage,
+        nextPage: resp.nextPage,
+        page: resp.page,
+        hasPrevPage: resp.hasPrevPage,
+        hasNextPage: resp.hasNextPage
+    })
+});
+
 
 // Traer datos por id
 router.get('/:pid', (req, res) => {
