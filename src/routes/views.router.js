@@ -7,11 +7,24 @@ const router = express.Router()
 const productManagerMongoose = new Products()
 const chatManager = new MessageManager()
 
-router.get('/', (req, res) => {
+router.get('/products', async (req, res) => {
 
-    productManagerMongoose.getAll()
-        .then(products => res.render('index', { products }))
-        .catch(error => res.render('index', error))
+    const { limit, page, sort, queryFilter } = req.query
+
+    const limite = limit ? parseInt(limit) : 10
+    const { docs, hasNextPage, hasPrevPage, nextPage, prevPage } = await productManagerMongoose.filtradoMasivo(page, limite, sort, queryFilter)
+
+    const products = docs;
+    res.render('index', {
+        products,
+        hasNextPage,
+        hasPrevPage,
+        nextPage,
+        prevPage
+    })
+    // productManagerMongoose.getAll()
+    //     .then(products => res.render('index', { products }))
+    //     .catch(error => res.render('index', error))
 
 })
 

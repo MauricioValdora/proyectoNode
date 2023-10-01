@@ -6,13 +6,13 @@ const router = express.Router();
 const cartMongoose = new CartMongoose();
 
 router.post('/', (req, res) => {
+
     const nuevoProducto = req.body;
     console.log(nuevoProducto)
 
     cartMongoose.save(nuevoProducto)
         .then(respuesta => res.send(`guardaste esta lista de productos `))
         .catch(error => res.send(error))
-
 
 });
 

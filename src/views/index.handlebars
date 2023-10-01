@@ -19,7 +19,14 @@
             <p>Stock: {{stock}}</p>
             <p>Categoría: {{category}}</p>
             <p>Estado: {{#if status}}Disponible{{else}}No disponible{{/if}}</p>
+            <button>agregar al carrito</button>
         </li>
         {{/each}}
     </ul>
+    {{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}"><button>Pagina anterior</button></a>
+    {{/if}}
+    {{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}"><button>Pagina siguiente</button></a>
+    {{/if}}
 </div>

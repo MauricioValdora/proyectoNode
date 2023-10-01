@@ -3,7 +3,8 @@ import { cartModel } from '../models/cart.model.js'
 export default class CartMongoose {
 
     save = async (cart) => {
-        const result = await cartModel.create(cart);
+        const result = await cartModel.create();
+        result.push(cart)
         return result;
     }
 
