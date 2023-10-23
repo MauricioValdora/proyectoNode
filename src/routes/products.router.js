@@ -49,7 +49,7 @@ router.get('/:pid', (req, res) => {
 
 
 // Retorno los productos existentes si es que los hay
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const product = req.body;
 
     if (
@@ -66,9 +66,9 @@ router.post('/', (req, res) => {
     }
 
     socketServer.sockets.emit('new_product', product)
-    productManagerMongoose.save(product)
+    const result = await productManagerMongoose.save(product)
 
-    res.status(200).send({ msg: 'Éxito' });
+    res.status(200).send({ msg: 'Éxito', payload: result });
 });
 
 // Actualizo los datos
