@@ -7,6 +7,10 @@ import viewRouter from './routes/views.router.js'
 import { Server } from 'socket.io'
 import mongoose from 'mongoose'
 import MessageManager from './/dao/dbManagers/messages.manager.js'
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import sessionRouter from '../src/routes/sessions.router.js'
+
 
 const messageManager = new MessageManager()
 const app = express()
@@ -26,11 +30,9 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static(__dirname + "/public"))
 
-app.use('/', viewRouter)
 
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRoutes)
-
 
 socketServer.on('connection', socket => {
 
@@ -45,7 +47,6 @@ socketServer.on('connection', socket => {
     })
 
     socket.on('message', (msg) => {
-
         messageManager.save(msg)
             .then(mensaje => {
                 messageManager.getAll()
@@ -53,9 +54,7 @@ socketServer.on('connection', socket => {
                     .catch((error) => console.log(error))
             })
             .catch(error => console.log(error))
-
     });
-
 })
 
 try {
@@ -65,4 +64,17 @@ try {
     console.log(error.message)
 }
 
+app.use(session({
+    store: MongoStore.create({
+        client: mongoose.connection.getClient(),
+        ttl: 3600
+    }),
+    secret: 'mauri123',
+    resave: true,
+    saveUninitialized: true
+}))
+
+
+app.use('/', viewRouter)
+app.use('/api/sessions', sessionRouter)
 
