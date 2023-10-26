@@ -28,14 +28,11 @@ router.post('/:cid/products/:pid', async (req, res) => {
     const cid = req.params.cid
     const pid = req.params.pid
     try {
-
         const carrito = await cartMongoose.addProductToCart(cid, pid);
         return res.send(carrito)
-
     } catch (error) {
         res.send('el error es ' + error.message)
     }
-    res.send(carrito)
 
 })
 
@@ -51,7 +48,6 @@ router.get('/:cid', async (req, res) => {
     } catch (error) {
         res.send(error.message)
     }
-
 })
 
 router.delete('/:cid/products/:pid', async (req, res) => {
@@ -66,7 +62,6 @@ router.delete('/:cid/products/:pid', async (req, res) => {
     } catch (error) {
         res.send({ error: error.message })
     }
-
 })
 
 router.delete('/:cid', async (req, res) => {

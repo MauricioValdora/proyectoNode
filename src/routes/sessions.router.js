@@ -29,24 +29,32 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
 
     try {
-        const {email,password} = req.body
-        const user = await userModel.findOne({email,password})
 
-        if(!user){
-            return res.status(400).send({status:'error'})
+        const { email, password } = req.body
+        const user = await userModel.findOne({ email, password })
+        console.log('-------------' + user)
+        if (!user && email !== 'adminCoder@coder.com' && password !== 'adminCod3r123') {
+            return res.status(404).send({ status: 'error' })
         }
-        console.log(user)
-        req.session.user = {
-            name:`${user.first_name} ${user.last_name}`,
-            email:user.email,
-            age:user.age
+        if (user) {
+            req.session.user = {
+                name: `${user.first_name} ${user.last_name}`,
+                email: user.email,
+                age: user.age,
+                rol: user.rol
+            }
         }
-        console.log(`esta es la session ${req.session.user}`)
-
-        res.send({statuss:'success'})
-
-    } catch (error) {
-        res.status(500).send({ status: 'error', message: 'register fail' })
+        if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+            req.session.user = {
+                name: 'Sr Admin',
+                email,
+                rol: 'admin'
+            }
+        }
+        return res.send({ statuss: 'success' })
+    }
+    catch (error) {
+        res.status(500).send({ status: 'error', message: 'Login fail' })
     }
 })
 

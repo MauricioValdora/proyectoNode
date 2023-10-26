@@ -1,4 +1,5 @@
 import { cartModel } from '../models/cart.model.js'
+import { productsModel } from '../models/products.model.js'
 
 export default class CartMongoose {
 
@@ -19,8 +20,28 @@ export default class CartMongoose {
     }
 
     addProductToCart = async (cid, pid) => {
-        const result = await cartModel.findByIdAndUpdate(cid, { $push: { products: pid } })
-        return result
+        const cart = await cartModel.findOne({ _id: cid })
+        const product = await productsModel.findOne({ _id: pid })
+        if (!cart) {
+            throw new Error('El carrito no existe')
+        }
+        if (!product) {
+            throw new Error('El Producto no existe')
+        }
+
+        const existingProductIndex = cart.products.findIndex(product => product._id == pid)
+
+        if (existingProductIndex == -1) {
+            cart.products.push({
+                _id: pid,
+                quantity: 1
+            })
+        } else {
+            cart.products[existingProductIndex].quantity = cart.products[existingProductIndex].quantity + 1
+        }
+        cart.save()
+
+        return cart
     }
 
     deleteProductFromCart = async (cid, pid) => {

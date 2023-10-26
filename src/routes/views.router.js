@@ -21,7 +21,7 @@ const privateAcces = (req, res, next) => {
     next()
 }
 
-router.get('/products', async (req, res) => {
+router.get('/products', privateAcces,async (req, res) => {
 
     const { limit, page, sort, queryFilter } = req.query
 
@@ -38,7 +38,7 @@ router.get('/products', async (req, res) => {
     })
 })
 
-router.get('/realtimeproducts', (req, res) => {
+router.get('/realtimeproducts', privateAcces,(req, res) => {
 
     productManagerMongoose.getAll()
         .then(products => {
@@ -54,7 +54,7 @@ router.get('/chat', (req, res) => {
 
 })
 
-router.get('/carts/:cid', async (req, res) => {
+router.get('/carts/:cid',privateAcces, async (req, res) => {
     const cid = req.params.cid;
     const cart = await cartModel.getById(cid);
     const jsonCart = cart.products[0].product;

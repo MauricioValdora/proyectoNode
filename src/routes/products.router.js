@@ -9,7 +9,6 @@ router.use(express.json());
 
 router.use(express.urlencoded({ extended: true }));
 
-
 // traer todos los datos
 router.get('/', async (req, res) => {
 
@@ -33,7 +32,7 @@ router.get('/', async (req, res) => {
 // Traer datos por id
 router.get('/:pid', (req, res) => {
     const pId = req.params.pid;
-    console.log(pId);
+    // console.log(pId);
 
     productManagerMongoose.getById(pId)
         .then(product => {
@@ -55,7 +54,7 @@ router.post('/', async (req, res) => {
     if (
         typeof product.title !== 'string' ||
         typeof product.description !== 'string' ||
-        typeof product.code !== 'string' ||
+        typeof product.code !== 'number' ||
         typeof product.price !== 'number' ||
         typeof product.status !== 'boolean' ||
         typeof product.stock !== 'number' ||
