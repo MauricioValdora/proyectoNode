@@ -10,6 +10,8 @@ import MessageManager from './/dao/dbManagers/messages.manager.js'
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import sessionRouter from '../src/routes/sessions.router.js'
+import passport from 'passport'
+import initializePassport from './config/passport.config.js'
 
 
 const messageManager = new MessageManager()
@@ -57,6 +59,8 @@ socketServer.on('connection', socket => {
     });
 })
 
+
+
 try {
     await mongoose.connect('mongodb+srv://mauricio:valdora@clustermaury.y8wiux9.mongodb.net/ecomerce')
     console.log('base de datos conectada perfectamente');
@@ -73,7 +77,9 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
-
+initializePassport();
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/', viewRouter)
 app.use('/api/sessions', sessionRouter)

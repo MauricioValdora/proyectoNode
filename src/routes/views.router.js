@@ -27,7 +27,6 @@ router.get('/products', privateAcces,async (req, res) => {
 
     const limite = limit ? parseInt(limit) : 10
     const { docs, hasNextPage, hasPrevPage, nextPage, prevPage } = await productManagerMongoose.filtradoMasivo(page, limite, sort, queryFilter)
-    console.log(docs)
     res.render('index', {
         hasNextPage,
         hasPrevPage,
